@@ -4,16 +4,19 @@ import { generateReport } from "@/server/generate";
 import { useFormStatus, useFormState } from "react-dom";
 
 const initialState = {
-  weather: null,
-  status: "init"
+  script: "",
+  status: "init",
+  weather: null
 };
 
+// TODO: refactor all this, move the state to the parent component
 export function GenForm() {
   const [state, formAction] = useFormState(generateReport, initialState);
 
   if(state.status === "success") {
-    console.log(state);
-    return <div>success</div>;
+    return (
+      <div>{state.script}</div>
+    );
   }
 
   return (
@@ -27,6 +30,7 @@ export function GenForm() {
         name="latitude"
         min="-90"
         max="90"
+        step="any"
         className="w-48 p-2 border border-zinc-3000 text-zinc-700 rounded-md mb-4"
         placeholder="Enter latitude"
       />
@@ -40,6 +44,7 @@ export function GenForm() {
         name="longitude"
         min="-180"
         max="180"
+        step="any"
         className="w-48 p-2 border border-zinc-300 text-zinc-700 rounded-md mb-4"
         placeholder="Enter longitude"
       />

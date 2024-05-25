@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Generative Weather Radio",
-  description: "Tune in to a generative weather report from any location, 24/7.",
+  title: "GWR",
+  description: "Generative Weather Radio",
 };
 
 export default function RootLayout({
