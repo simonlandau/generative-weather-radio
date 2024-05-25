@@ -1,7 +1,17 @@
-export function GenForm() {
+"use client";
 
+import { generateReport } from "@/server/generate";
+import { useFormStatus, useFormState } from "react-dom";
+
+const initialState = {
+  message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  status: "init",
+};
+
+export function GenForm() {
+  const [state, formAction] = useFormState(generateReport, initialState);
   return (
-    <form className="mt-8 flex flex-col items-center">
+    <form action={formAction} className="mt-8 flex flex-col items-center">
       <label htmlFor="latitude" className="text-lg font-bold mb-2">
         Latitude:
       </label>
@@ -28,12 +38,21 @@ export function GenForm() {
         placeholder="Enter longitude"
       />
 
-      <button
-        type="submit"
-        className="bg-zinc-500 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Submit
-      </button>
+      <SubmitButton />
     </form>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  let buttonMessage = pending ? "Loading..." : "Subscribe";
+
+  return (
+    <button
+      type="submit"
+      className="bg-zinc-500 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Submit
+    </button>
   );
 }
