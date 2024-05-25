@@ -9,17 +9,16 @@ export const generateReport = async (prevState: any, formData: FormData) => {
 
   if (isNaN(latitude) || isNaN(longitude)) {
     console.error("Invalid latitude or longitude");
-    return { script: "", status: "error", audio: null };
+    return { script: "", status: "error", weather: null };
   }
 
   try {
     const weather = await getWeather(latitude, longitude);
     const script = await generateScript(weather);
-    const audio = await generateAudio(script!);
 
-    return { script: script, status: "success", audio: audio };
+    return { script: script, status: "success", weather: weather };
   } catch (error) {
     console.error(error);
-    return { script: "", status: "error", audio: null };
+    return { script: "", status: "error", weather: null };
   }
 };
