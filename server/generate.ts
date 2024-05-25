@@ -1,19 +1,17 @@
 "use server";
 
-import { generateAudio, generateScript } from "./openai-adapter";
-import { getWeather } from "./openweather";
+import { generateScript } from "./openai-adapter";
+import { getGeocoding, getWeather } from "./openweather";
 
 export const generateReport = async (prevState: any, formData: FormData) => {
-  const latitude = parseFloat(formData.get("latitude") as string);
-  const longitude = parseFloat(formData.get("longitude") as string);
-
-  if (isNaN(latitude) || isNaN(longitude)) {
-    console.error("Invalid latitude or longitude");
-    return { script: "", status: "error", weather: null };
-  }
+  const city = formData.get("city") as string;
 
   try {
-    const weather = await getWeather(latitude, longitude);
+    const geocoding = await getGeocoding(city);
+    if (geocoding.length === 0) {
+      throw new Error("No geocoding results found");
+    }
+    const weather = await getWeather(geocoding[0].lat, geocoding[0].lon);
     const script = await generateScript(weather);
 
     return { script: script, status: "success", weather: weather };

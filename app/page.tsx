@@ -1,4 +1,4 @@
-import { GenForm } from "@/components/genform";
+import Panel from "@/components/panel";
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
       <p className="text-2xl font-bold">
         Tune in to a generative weather report from any location, 24/7.
       </p>
-      <GenForm />
+      <Panel />
     </main>
   );
 }
