@@ -1,15 +1,25 @@
 "use server";
 
-import { TIMEOUT } from "dns";
+import { getWeather } from "./openweather";
 
 export const generateReport = async (prevState: any, formData: FormData) => {
-    setTimeout(() => {
-        
-    }, 5000);
+
     console.log("Generating report...");
-    let latitude = formData.get("latitude");
-    let longitude = formData.get("longitude");
-    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-    return { message: "Report generated successfully", status: "success" };
-}
+  const latitude = parseFloat(formData.get("latitude") as string);
+  const longitude = parseFloat(formData.get("longitude") as string);
+
+  if (isNaN(latitude) || isNaN(longitude)) {
+    console.error("Invalid latitude or longitude");
+    return {weather: null, status: "error"};
+  }
+
+  try {
+    const weather = await getWeather(latitude, longitude);
+    return {weather: weather, status: "success"};
+  } catch (error) {
+    console.error(error);
+    return {weather: null, status: "error"};
+  }
+
+};
 

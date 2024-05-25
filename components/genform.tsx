@@ -4,12 +4,18 @@ import { generateReport } from "@/server/generate";
 import { useFormStatus, useFormState } from "react-dom";
 
 const initialState = {
-  message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  status: "init",
+  weather: null,
+  status: "init"
 };
 
 export function GenForm() {
   const [state, formAction] = useFormState(generateReport, initialState);
+
+  if(state.status === "success") {
+    console.log(state);
+    return <div>success</div>;
+  }
+
   return (
     <form action={formAction} className="mt-8 flex flex-col items-center">
       <label htmlFor="latitude" className="text-lg font-bold mb-2">
