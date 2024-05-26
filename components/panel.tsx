@@ -4,6 +4,7 @@ import { generateReport } from "@/server/generate";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { GenForm } from "./genform";
+import WeatherCard from "./weathercard";
 
 const initialState = {
   script: "",
@@ -19,7 +20,8 @@ export default function Panel() {
   useEffect(() => {
     const fetchAudio = async (script: string) => {
       try {
-        const response = await fetch(`/api/report?script=${encodeURIComponent(script)}`);
+        const response = await fetch(`/api/report?script=${encodeURIComponent(script)}`
+);
         if (!response.ok) {
           throw new Error("Failed to generate audio");
         }
@@ -36,14 +38,31 @@ export default function Panel() {
     }
   }, [state.script, state.status]);
 
-  if (state.status === "success") {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <p>{state.script}</p>
-        {audioUrl && <audio controls src={audioUrl} />}
+  return (
+    <section className="w-full py-16 md:py-24 lg:py-32 xl:py-48">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center space-y-6 text-center">
+          <div className="space-y-4">
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+              Generative Weather Radio
+            </h1>
+            <p className="mx-auto max-w-[700px] md:text-xl">
+              Tune in to a AI generated weather broadcast from the city of your choice.
+            </p>
+          </div>
+          {state.status === "success" && state.weather && (
+            <WeatherCard
+              city={state.weather.name}
+              temperature={state.weather.main.temp.toString()}
+              high={state.weather.main.temp_max.toString()}
+              low={state.weather.main.temp_min.toString()}
+              weather={state.weather.weather[0].description}
+            />
+          )}
+          {state.status === "success" && audioUrl && <audio controls src={audioUrl} className="mt-10" />}
+          {state.status !== "success" && <GenForm formAction={formAction} />}
+        </div>
       </div>
-    );
-  }
-
-  return <GenForm formAction={formAction} />;
+    </section>
+  );
 }

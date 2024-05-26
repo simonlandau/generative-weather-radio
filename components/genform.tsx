@@ -13,11 +13,7 @@ export function GenForm({ formAction }: GenFormProps) {
   return (
     <Card>
       <form action={formAction}>
-      <CardHeader>
-        <CardTitle>Generate Weather Radio</CardTitle>
-        <CardDescription>Tune in to a generative weather report from any city, 24/7</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="flex flex-col p-6 space-y-4">
         <Input placeholder="Enter city name" type="text" name="city" />
         <SubmitButton />
       </CardContent>
