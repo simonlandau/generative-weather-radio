@@ -1,6 +1,9 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface GenFormProps {
   formAction: (payload: FormData) => void;
@@ -8,33 +11,26 @@ interface GenFormProps {
 
 export function GenForm({ formAction }: GenFormProps) {
   return (
-    <form action={formAction} className="mt-8 flex flex-col items-center">
-      <label htmlFor="city" className="text-lg font-bold mb-2">
-        City Name:
-      </label>
-      <input
-        type="text"
-        id="city"
-        name="city"
-        className="w-48 p-2 border border-zinc-300 text-zinc-700 rounded-md mb-4"
-        placeholder="Enter city name"
-      />
-
-      <SubmitButton />
-    </form>
+    <Card>
+      <form action={formAction}>
+      <CardHeader>
+        <CardTitle>Generate Weather Radio</CardTitle>
+        <CardDescription>Tune in to a generative weather report from any city, 24/7</CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        <Input placeholder="Enter city name" type="text" name="city" />
+        <SubmitButton />
+      </CardContent>
+      </form>
+    </Card>
   );
 }
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  let buttonMessage = pending ? "Loading..." : "Submit";
+  let buttonMessage = pending ? "Loading..." : "Generate";
 
   return (
-    <button
-      type="submit"
-      className="bg-zinc-500 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded"
-    >
-      {buttonMessage}
-    </button>
+    <Button type="submit">{buttonMessage}</Button>
   );
 }
