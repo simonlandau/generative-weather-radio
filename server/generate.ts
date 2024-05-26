@@ -1,10 +1,12 @@
 "use server";
 
-import { generateScript } from "./openai-adapter";
 import { getGeocoding, getWeather } from "./openweather";
 
 export const generateReport = async (prevState: any, formData: FormData) => {
+  
+  // add error handling
   const city = formData.get("city") as string;
+  const voice = formData.get("voice") as string;
 
   try {
     const geocoding = await getGeocoding(city);
@@ -12,11 +14,10 @@ export const generateReport = async (prevState: any, formData: FormData) => {
       throw new Error("No geocoding results found");
     }
     const weather = await getWeather(geocoding[0].lat, geocoding[0].lon);
-    const script = await generateScript(weather);
 
-    return { script: script, status: "success", weather: weather };
+    return { voice: voice, status: "success", weather: weather };
   } catch (error) {
     console.error(error);
-    return { script: "", status: "error", weather: null };
+    return { voice: "", status: "error", weather: null };
   }
 };

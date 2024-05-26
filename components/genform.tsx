@@ -5,6 +5,15 @@ import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface GenFormProps {
   formAction: (payload: FormData) => void;
@@ -14,10 +23,25 @@ export function GenForm({ formAction }: GenFormProps) {
   return (
     <Card>
       <form action={formAction}>
-      <CardContent className="flex flex-col p-6 space-y-4">
-        <Input placeholder="Enter city name" type="text" name="city" />
-        <SubmitButton />
-      </CardContent>
+        <CardContent className="flex flex-col p-6 space-y-4">
+          <Input
+            placeholder="Enter city name"
+            type="text"
+            name="city"
+            required
+          />
+          <Select name="voice" required>
+            <SelectTrigger>
+              <SelectValue placeholder="voice" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="masculine">masculine</SelectItem>
+              <SelectItem value="feminine">feminine</SelectItem>
+              <SelectItem value="neutral">neutral</SelectItem>
+            </SelectContent>
+          </Select>
+          <SubmitButton />
+        </CardContent>
       </form>
     </Card>
   );
@@ -26,6 +50,12 @@ export function GenForm({ formAction }: GenFormProps) {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending}>{pending ? <Spinner className="fill-white dark:fill-black"/> : "Generate"}</Button>
+    <Button type="submit" disabled={pending}>
+      {pending ? (
+        <Spinner className="fill-white dark:fill-black" />
+      ) : (
+        "Generate"
+      )}
+    </Button>
   );
 }

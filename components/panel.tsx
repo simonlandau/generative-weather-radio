@@ -7,9 +7,10 @@ import { GenForm } from "./genform";
 import WeatherCard from "./weathercard";
 import { Spinner } from "./ui/spinner";
 import { Button } from "./ui/button";
+import { WeatherResponse } from "@/types/openweather";
 
 const initialState = {
-  script: "",
+  voice: "",
   status: "init",
   weather: null,
 };
@@ -18,27 +19,34 @@ export default function Panel() {
   const [state, formAction] = useFormState(generateReport, initialState);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
-  // maybe make this a custom hook
-  useEffect(() => {
-    const fetchAudio = async (script: string) => {
-      try {
-        const response = await fetch(`/api/report?script=${encodeURIComponent(script)}`
-);
-        if (!response.ok) {
-          throw new Error("Failed to generate audio");
-        }
-        const audioBlob = await response.blob();
-        const url = URL.createObjectURL(audioBlob);
-        setAudioUrl(url);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const fetchAudio = async (weather: WeatherResponse, voice: string) => {
+    try {
+      const response = await fetch('/api/report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ weather, voice }),
+      });
 
-    if (state.status === "success" && state.script) {
-      fetchAudio(state.script!);
+      if (!response.ok) {
+        throw new Error("Failed to generate audio");
+      }
+
+      const audioBlob = await response.blob();
+      const url = URL.createObjectURL(audioBlob);
+      setAudioUrl(url);
+    } catch (error) {
+      console.error(error);
     }
-  }, [state.script, state.status]);
+  };
+
+  useEffect(() => {
+    if (state.status === "success" && state.weather && !audioUrl) {
+      console.log("fetching audio");
+      fetchAudio(state.weather, state.voice);
+    }
+  }, [state, audioUrl]);
 
   return (
     <section className="w-full py-16 md:py-24 lg:py-32 xl:py-48">
@@ -48,7 +56,7 @@ export default function Panel() {
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Generative Weather Radio
             </h1>
-            <p className="mx-auto max-w-[700px] md:text-xl">
+            <p className="mx-auto max-w-[700px] md:text-xl text-zinc-700 dark:text-zinc-300">
               Tune in to a AI generated weather broadcast from the city of your choice.
             </p>
           </div>
