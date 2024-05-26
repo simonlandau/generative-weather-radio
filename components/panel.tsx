@@ -6,6 +6,7 @@ import { useFormState } from "react-dom";
 import { GenForm } from "./genform";
 import WeatherCard from "./weathercard";
 import { Spinner } from "./ui/spinner";
+import { Button } from "./ui/button";
 
 const initialState = {
   script: "",
@@ -60,7 +61,14 @@ export default function Panel() {
               weather={state.weather.weather[0].description}
             />
           )}
-          {state.status === "success" && audioUrl && <audio controls src={audioUrl} className="mt-10" />}
+          {state.status === "success" && audioUrl && (
+            <>
+            <audio controls src={audioUrl} className="mt-10" />
+              <Button variant="secondary" onClick={() => window.location.reload()}>
+                Reset
+              </Button>
+            </>
+          )}
           {state.status === "success" && !audioUrl && (
             <div className="flex items-center">
               <Spinner className="fill-black dark:fill-white" />

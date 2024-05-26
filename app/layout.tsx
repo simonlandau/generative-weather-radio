@@ -7,7 +7,7 @@ import { ModeToggle } from "@/components/ui/modetoggle";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GWR",
+  title: "Generative Weather Radio",
   description: "Generative Weather Radio",
 };
 
