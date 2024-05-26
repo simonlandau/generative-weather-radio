@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { GenForm } from "./genform";
 import WeatherCard from "./weathercard";
+import { Spinner } from "./ui/spinner";
 
 const initialState = {
   script: "",
@@ -60,6 +61,12 @@ export default function Panel() {
             />
           )}
           {state.status === "success" && audioUrl && <audio controls src={audioUrl} className="mt-10" />}
+          {state.status === "success" && !audioUrl && (
+            <div className="flex items-center">
+              <Spinner className="fill-black dark:fill-white" />
+              <p className="ml-2">generating audio...</p>
+            </div>
+          )}
           {state.status !== "success" && <GenForm formAction={formAction} />}
         </div>
       </div>

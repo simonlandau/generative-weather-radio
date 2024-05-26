@@ -1,9 +1,10 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Spinner } from "./ui/spinner";
 
 interface GenFormProps {
   formAction: (payload: FormData) => void;
@@ -24,9 +25,7 @@ export function GenForm({ formAction }: GenFormProps) {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  let buttonMessage = pending ? "Loading..." : "Generate";
-
   return (
-    <Button type="submit">{buttonMessage}</Button>
+    <Button type="submit" disabled={pending}>{pending ? <Spinner className="fill-white dark:fill-black"/> : "Generate"}</Button>
   );
 }
