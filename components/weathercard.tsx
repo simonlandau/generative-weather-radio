@@ -1,5 +1,3 @@
-
-
 import { Card } from "@/components/ui/card"
 import { SVGProps } from "react"
 
@@ -14,12 +12,12 @@ interface WeatherCardProps {
 export default function WeatherCard({ city, temperature, high, low, weather }: WeatherCardProps) {
   return (
     <Card className="w-full max-w-md mx-auto p-6 shadow-lg rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <div>
+      <div className="flex w-full items-start mb-4">
+        <div className="w-1/2 text-left">
           <h2 className="text-2xl font-bold">{city}</h2>
           <p />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex w-1/2 items-center justify-start space-x-2">
           <ThermometerIcon className="w-6 h-6" />
           <span className="text-4xl font-bold">{temperature}°F</span>
         </div>
