@@ -1,36 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Generative Weather Radio
+Generative Weather Radio is a web app which uses the OpenWeather API and OpenAI's GPT3.5 and TTS model to generate audio weather reports for any city.
 
-## Getting Started
+## TODO
+- [ ] clean weather data (round tempatures, remove unused data, fix time data, etc.)
+- [ ] clean air quality data (remove unused data, etc.)
+- [ ] explore other api endpoints for expanding report (news, traffic, sports, etc.)
+- [ ] deploy to Vercel (set up sentry for error tracking?)
+- [ ] uses google places api for location input autocomplete?
+- [ ] build custom audio player component?
+- [ ] clerk user authentication?
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
