@@ -4,7 +4,6 @@ const WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const GEO_BASE_URL = 'https://api.openweathermap.org/geo/1.0/direct';
 const AIR_POLLUTION_BASE_URL = 'http://api.openweathermap.org/data/2.5/air_pollution';
 
-
 export async function getWeather(latitude: number, longitude: number): Promise<WeatherResponse> {
   try {
     const response = await fetch(`${WEATHER_BASE_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.OPENWEATHER_API_KEY}&units=imperial`);
@@ -38,7 +37,6 @@ export async function getAirPollution(latitude: number, longitude: number): Prom
     }
   }
 }
-
 
 export async function getGeocoding(cityName: string): Promise<GeocodingResponse[]> {
   try {

@@ -14,6 +14,7 @@ const initialState = {
   status: "init",
   weather: null,
   air: null,
+  message: ""
 };
 
 export default function Panel() {
@@ -29,11 +30,9 @@ export default function Panel() {
         },
         body: JSON.stringify({ voice, weather, air }),
       });
-
       if (!response.ok) {
         throw new Error("Failed to generate audio");
       }
-
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
@@ -44,6 +43,7 @@ export default function Panel() {
 
   useEffect(() => {
     if (state.status === "success" && state.weather != null && !audioUrl) {
+      console.log("generating audio")
       if (state.air != null) {
         fetchAudio(state.voice, state.weather, state.air);
       } else {
@@ -87,7 +87,7 @@ export default function Panel() {
               <p className="ml-2">generating audio...</p>
             </div>
           )}
-          {state.status !== "success" && <GenForm formAction={formAction} />}
+          {state.status !== "success" && <GenForm formAction={formAction} message={state.message} />}
         </div>
       </div>
     </section>

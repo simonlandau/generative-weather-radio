@@ -6,26 +6,25 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { Checkbox } from "./ui/checkbox";
-
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
 interface GenFormProps {
   formAction: (payload: FormData) => void;
+  message: string;
 }
 
-export function GenForm({ formAction }: GenFormProps) {
+export function GenForm({ formAction, message }: GenFormProps) {
   return (
     <Card>
       <form action={formAction}>
         <CardContent className="flex flex-col p-6 space-y-4">
+          {message && <p className="text-red-700 dark:text-red-300 text-center text-sm">{message}</p>}
           <Input
             placeholder="Enter city name"
             type="text"
