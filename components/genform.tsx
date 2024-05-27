@@ -5,6 +5,8 @@ import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
+import { Checkbox } from "./ui/checkbox";
+
 import {
   Select,
   SelectContent,
@@ -40,6 +42,12 @@ export function GenForm({ formAction }: GenFormProps) {
               <SelectItem value="neutral">neutral</SelectItem>
             </SelectContent>
           </Select>
+          <div className="flex items-center justify-start space-x-2">
+            <Checkbox name="air_pollution" id="air_pollution" />
+            <label htmlFor="air_pollution" className="text-sm">
+              include air pollution
+            </label>
+          </div>
           <SubmitButton />
         </CardContent>
       </form>

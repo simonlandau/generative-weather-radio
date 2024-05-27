@@ -7,26 +7,27 @@ import { GenForm } from "./genform";
 import WeatherCard from "./weathercard";
 import { Spinner } from "./ui/spinner";
 import { Button } from "./ui/button";
-import { WeatherResponse } from "@/types/openweather";
+import { AirPollutionResponse, WeatherResponse } from "@/types/openweather";
 
 const initialState = {
   voice: "",
   status: "init",
   weather: null,
+  air: null,
 };
 
 export default function Panel() {
   const [state, formAction] = useFormState(generateReport, initialState);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
-  const fetchAudio = async (weather: WeatherResponse, voice: string) => {
+  const fetchAudio = async (voice: string, weather: WeatherResponse, air?: AirPollutionResponse) => {
     try {
       const response = await fetch('/api/report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ weather, voice }),
+        body: JSON.stringify({ voice, weather, air }),
       });
 
       if (!response.ok) {
@@ -42,9 +43,12 @@ export default function Panel() {
   };
 
   useEffect(() => {
-    if (state.status === "success" && state.weather && !audioUrl) {
-      console.log("fetching audio");
-      fetchAudio(state.weather, state.voice);
+    if (state.status === "success" && state.weather != null && !audioUrl) {
+      if (state.air != null) {
+        fetchAudio(state.voice, state.weather, state.air);
+      } else {
+        fetchAudio(state.voice, state.weather);
+      }
     }
   }, [state, audioUrl]);
 

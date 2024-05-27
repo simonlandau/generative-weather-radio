@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateScript } from '@/server/openai-adapter';
 import { generateAudio } from '@/server/openai-adapter';
-import { WeatherResponse } from '@/types/openweather';
+import { AirPollutionResponse, WeatherResponse } from '@/types/openweather';
 import { Voice } from '@/server/openai-adapter';
 
 export async function POST(req: NextRequest) {
   
   // add error handling for invalid json response
-  const { weather, voice } = await req.json() as { weather: WeatherResponse; voice: string };
+  const { voice, weather, air} = await req.json() as { voice: string; weather: WeatherResponse; air?: AirPollutionResponse };
   
   try {
     let voiceType: Voice;
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       throw new Error("Invalid voice type");
     }
 
-    const script = await generateScript(weather);
+    const script = await generateScript(weather, air);
     const audioBuffer = await generateAudio(script!, voiceType);
     return new Response(audioBuffer, {
       headers: {
