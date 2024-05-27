@@ -45,7 +45,7 @@ export function GenForm({ formAction }: GenFormProps) {
           <div className="flex items-center justify-start space-x-2">
             <Checkbox name="air_pollution" id="air_pollution" />
             <label htmlFor="air_pollution" className="text-sm">
-              include air pollution
+              include air quality
             </label>
           </div>
           <SubmitButton />
