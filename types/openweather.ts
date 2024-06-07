@@ -88,11 +88,14 @@ export interface AirPollutionResponse {
 }
 
 export interface WeatherData {
+  location: string;
+  country: string;
+  state?: string;
   description: string;
-  tempature: number;
+  temperature: number;
   feels_like: number;
-  temp_min: number;
-  temp_max: number;
+  min_temperature: number;
+  max_temperature: number;
   pressure: number;
   humidity: number;
   visibility: number;
@@ -111,7 +114,7 @@ export interface WeatherData {
     "3h"?: number;
   };
   air_pollution?: {
-    aqi: number;
+    air_quality_index: number;
     co: number;
     no: number;
     no2: number;
