@@ -7,28 +7,27 @@ import { GenForm } from "./genform";
 import WeatherCard from "./weathercard";
 import { Spinner } from "./ui/spinner";
 import { Button } from "./ui/button";
-import { AirPollutionResponse, WeatherResponse } from "@/types/openweather";
+import { WeatherData } from "@/types/openweather";
 
 const initialState = {
   voice: "",
   status: "init",
-  weather: null,
-  air: null,
-  message: ""
+  data: null,
+  message: "",
 };
 
 export default function Panel() {
   const [state, formAction] = useFormState(generateReport, initialState);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
-  const fetchAudio = async (voice: string, weather: WeatherResponse, air?: AirPollutionResponse) => {
+  const fetchAudio = async (voice: string, data: WeatherData) => {
     try {
-      const response = await fetch('/api/report', {
-        method: 'POST',
+      const response = await fetch("/api/report", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ voice, weather, air }),
+        body: JSON.stringify({ voice, data }),
       });
       if (!response.ok) {
         throw new Error("Failed to generate audio");
@@ -42,13 +41,9 @@ export default function Panel() {
   };
 
   useEffect(() => {
-    if (state.status === "success" && state.weather != null && !audioUrl) {
-      console.log("generating audio")
-      if (state.air != null) {
-        fetchAudio(state.voice, state.weather, state.air);
-      } else {
-        fetchAudio(state.voice, state.weather);
-      }
+    if (state.status === "success" && state.data != null && !audioUrl) {
+      console.log("generating audio");
+      fetchAudio(state.voice, state.data);
     }
   }, [state, audioUrl]);
 
@@ -57,25 +52,23 @@ export default function Panel() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-6 text-center">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-              Generative Weather Radio
-            </h1>
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">Generative Weather Radio</h1>
             <p className="mx-auto max-w-[700px] md:text-xl text-zinc-700 dark:text-zinc-300">
               Tune in to a AI generated weather broadcast from the city of your choice.
             </p>
           </div>
-          {state.status === "success" && state.weather && (
+          {state.status === "success" && state.data && (
             <WeatherCard
-              city={state.weather.name}
-              temperature={state.weather.main.temp.toString()}
-              high={state.weather.main.temp_max.toString()}
-              low={state.weather.main.temp_min.toString()}
-              weather={state.weather.weather[0].description}
+              city={state.data.location}
+              temperature={state.data.temperature.toString()}
+              high={state.data.max_temperature.toString()}
+              low={state.data.min_temperature.toString()}
+              weather={state.data.description}
             />
           )}
           {state.status === "success" && audioUrl && (
             <>
-            <audio controls src={audioUrl} className="mt-10" />
+              <audio controls src={audioUrl} className="mt-10" />
               <Button variant="secondary" onClick={() => window.location.reload()}>
                 Reset
               </Button>

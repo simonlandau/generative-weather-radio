@@ -86,3 +86,42 @@ export interface AirPollutionResponse {
     dt: number;
   }>;
 }
+
+export interface WeatherData {
+  location: string;
+  country: string;
+  state?: string;
+  description: string;
+  temperature: number;
+  feels_like: number;
+  min_temperature: number;
+  max_temperature: number;
+  pressure: number;
+  humidity: number;
+  visibility: number;
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
+  };
+  cloud_coverage: number;
+  rain?: {
+    "1h"?: number;
+    "3h"?: number;
+  };
+  snow?: {
+    "1h"?: number;
+    "3h"?: number;
+  };
+  air_pollution?: {
+    air_quality_index: number;
+    co: number;
+    no: number;
+    no2: number;
+    o3: number;
+    so2: number;
+    pm2_5: number;
+    pm10: number;
+    nh3: number;
+  };
+}

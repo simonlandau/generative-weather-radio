@@ -1,9 +1,8 @@
 "use server";
 
-import { getAirPollution, getGeocoding, getWeather } from "./openweather";
+import { getAirPollution, getGeocoding, getWeather, parseWeatherData } from "./openweather";
 
 export const generateReport = async (prevState: any, formData: FormData) => {
-  
   const city = formData.get("city") as string;
   const voice = formData.get("voice") as string;
   const air_pollution = formData.get("air_pollution") as string;
@@ -19,11 +18,13 @@ export const generateReport = async (prevState: any, formData: FormData) => {
     let weather = await getWeather(geocoding[0].lat, geocoding[0].lon);
     if (air_pollution === "on") {
       const air = await getAirPollution(geocoding[0].lat, geocoding[0].lon);
-      return { voice: voice, status: "success", weather: weather, air: air, message: "" };
+      let data = parseWeatherData(weather, geocoding[0], air);
+      return { voice: voice, status: "success", data: data, message: "" };
     }
-    return { voice: voice, status: "success", weather: weather, air: null, message: "" };
+    let data = parseWeatherData(weather, geocoding[0]);
+    return { voice: voice, status: "success", data: data, message: "" };
   } catch (error) {
     console.error(error);
-    return { voice: "", status: "error", weather: null, air: null, message: (error as Error).message };
+    return { voice: "", status: "error", data: null, message: (error as Error).message };
   }
 };
